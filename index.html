@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⏰ What Time Is It? | Inglese – Orologio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --pink:    #FF6B9D;
+  --orange:  #FF9A3C;
+  --yellow:  #FFD93D;
+  --green:   #6BCB77;
+  --blue:    #4D96FF;
+  --purple:  #9B72CF;
+  --teal:    #38CFBD;
+  --dark:    #2D2D44;
+  --cream:   #FFFBF0;
+  --white:   #FFFFFF;
+  --shadow:  0 4px 20px rgba(0,0,0,0.12);
+  --radius:  16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+  color: var(--dark);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,107,157,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(77,150,255,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255,217,61,0.06) 0%, transparent 60%);
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--dark);
+  padding: 16px 32px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 4px 20px rgba(45,45,68,0.3);
+  position: relative; overflow: hidden;
+}
+.header::before {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 10px,
+    rgba(255,255,255,0.02) 10px, rgba(255,255,255,0.02) 20px
+  );
+}
+.header-icon { font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+.header-text { flex: 1; }
+.header-title {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 26px; color: var(--yellow);
+  letter-spacing: .5px; line-height: 1.1;
+}
+.header-sub { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.header-badge {
+  background: var(--yellow); color: var(--dark);
+  font-weight: 900; font-size: 13px;
+  border-radius: 999px; padding: 6px 16px;
+  letter-spacing: .3px;
+}
+
+/* ── TABS ── */
+.tabs-bar {
+  display: flex; gap: 6px;
+  background: var(--dark);
+  padding: 10px 32px 0;
+}
+.tab-btn {
+  padding: 10px 20px 12px;
+  background: rgba(255,255,255,0.08);
+  border: none; border-radius: 12px 12px 0 0;
+  color: rgba(255,255,255,0.55);
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+  letter-spacing: .2px;
+}
+.tab-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+.tab-btn.active { background: var(--cream); color: var(--dark); }
+.tab-btn.study.active { background: #F5F0FF; }
+.tab-btn.lv1.active { background: #FFF0F5; }
+.tab-btn.lv2.active { background: #FFF4E0; }
+.tab-btn.lv3.active { background: #F0FFF4; }
+.tab-btn.bingo.active { background: #F0F4FF; }
+
+/* ── STUDY PAGE ── */
+.study-banner {
+  background: linear-gradient(135deg, #7C4DFF 0%, #9B72CF 60%, #4D96FF 100%);
+  border-radius: var(--radius); padding: 18px 24px;
+  color: white; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 4px 20px rgba(124,77,255,0.35);
+}
+.study-banner .sb-icon { font-size: 44px; }
+.study-banner h2 { font-family:'Fredoka One',sans-serif; font-size:22px; margin-bottom:3px; }
+.study-banner p  { font-size:13px; opacity:.85; }
+
+/* Interactive study clock */
+.study-layout {
+  display: grid; grid-template-columns: 280px 1fr; gap: 24px;
+  margin-bottom: 28px; align-items: start;
+}
+.study-clock-box {
+  background: white; border-radius: var(--radius);
+  padding: 24px 20px; text-align: center;
+  box-shadow: var(--shadow); border: 2px solid #E8E0FF;
+  position: relative;
+}
+.study-clock-box h3 { font-family:'Fredoka One',sans-serif; font-size:16px; color:#7C4DFF; margin-bottom:14px; }
+.study-clock-box svg { cursor: pointer; }
+.study-clock-box svg:hover { filter: drop-shadow(0 4px 16px rgba(124,77,255,0.35)); }
+
+.study-time-display {
+  margin-top: 14px;
+  font-family:'Fredoka One',sans-serif; font-size:32px;
+  color: var(--dark); letter-spacing:.5px;
+}
+.study-digital {
+  font-size:16px; color:#999; font-weight:700; margin-top:2px;
+}
+
+.study-hand-btns {
+  display:flex; gap:8px; margin-top:14px; justify-content:center;
+}
+.hand-btn {
+  flex:1; padding:8px 6px; border-radius:8px; border:2px solid #E0E0E0;
+  background:white; font-family:'Nunito',sans-serif; font-size:12px;
+  font-weight:800; cursor:pointer; transition:all .15s; color:var(--dark);
+}
+.hand-btn.hour  { border-color:#FF6B9D; }
+.hand-btn.min   { border-color:#4D96FF; }
+.hand-btn:hover { transform:translateY(-2px); box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+.hand-btn.active-hand { box-shadow:0 0 0 3px currentColor; }
+
+.study-info-panel {
+  display:flex; flex-direction:column; gap:14px;
+}
+
+/* Rule cards */
+.rule-card {
+  background:white; border-radius:var(--radius); padding:18px 20px;
+  border-left:5px solid; box-shadow:var(--shadow);
+  transition: all .2s;
+}
+.rule-card.oclock  { border-color:#FF6B9D; }
+.rule-card.half    { border-color:#FF9A3C; }
+.rule-card.quarter { border-color:#4D96FF; }
+.rule-card.past    { border-color:#6BCB77; }
+.rule-card.to      { border-color:#9B72CF; }
+.rule-card.active-rule { transform:scale(1.02); box-shadow:0 6px 24px rgba(0,0,0,0.15); }
+
+.rule-header {
+  display:flex; align-items:center; gap:10px; margin-bottom:10px;
+}
+.rule-emoji { font-size:28px; }
+.rule-title { font-family:'Fredoka One',sans-serif; font-size:18px; }
+.rule-card.oclock  .rule-title { color:#FF6B9D; }
+.rule-card.half    .rule-title { color:#FF9A3C; }
+.rule-card.quarter .rule-title { color:#4D96FF; }
+.rule-card.past    .rule-title { color:#6BCB77; }
+.rule-card.to      .rule-title { color:#9B72CF; }
+
+.rule-formula {
+  background:#F8F5FF; border-radius:8px; padding:10px 14px;
+  font-family:'Fredoka One',sans-serif; font-size:15px;
+  color:var(--dark); margin-bottom:10px; border:1px dashed #D0C0FF;
+}
+.rule-examples {
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.rule-ex {
+  background:#F0F0F0; border-radius:999px; padding:6px 14px;
+  font-size:13px; font-weight:700; color:var(--dark);
+  cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:6px;
+  border:2px solid transparent;
+}
+.rule-ex:hover { background:#EDE0FF; border-color:#9B72CF; transform:translateY(-2px); }
+.rule-ex .ex-audio { font-size:14px; }
+
+/* Translation badge */
+.trans-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:#FFF8E0; border:2px solid #FFD93D; border-radius:999px;
+  padding:3px 12px; font-size:12px; font-weight:800; color:#886600;
+  cursor:pointer; transition:all .15s; user-select:none;
+}
+.trans-badge:hover { background:#FFECB0; }
+.trans-text { display:none; }
+.trans-badge.shown .trans-text { display:inline; }
+.trans-badge.shown .trans-hide { display:none; }
+.trans-badge .trans-hide { display:inline; }
+
+/* hands legend */
+.hands-legend {
+  display:flex; gap:12px; justify-content:center; margin-top:10px;
+}
+.hand-leg {
+  display:flex; align-items:center; gap:5px;
+  font-size:12px; font-weight:800; color:#666;
+}
+.hand-dot { width:12px; height:12px; border-radius:50%; }
+.hand-dot.hour { background:#FF6B9D; }
+.hand-dot.min  { background:#2D2D44; }
+
+/* clock presets row */
+.presets-row {
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;
+}
+.preset-btn {
+  display:flex; flex-direction:column; align-items:center;
+  background:white; border:2px solid #E0E0E0; border-radius:var(--radius-sm);
+  padding:10px 8px; cursor:pointer; transition:all .15s;
+  min-width:68px; box-shadow:0 2px 8px rgba(0,0,0,0.07);
+}
+.preset-btn:hover { border-color:#7C4DFF; background:#F5F0FF; transform:translateY(-2px); }
+.preset-btn.active-preset { border-color:#7C4DFF; background:#EDE0FF; }
+.preset-btn .pb-time { font-family:'Fredoka One',sans-serif; font-size:13px; color:var(--dark); margin-top:4px; }
+.preset-btn .pb-label { font-size:10px; color:#999; font-weight:700; margin-top:2px; text-align:center; line-height:1.2; }
+
+/* audio pulse */
+@keyframes audioPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(124,77,255,0.5); }
+  70%  { box-shadow: 0 0 0 10px rgba(124,77,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(124,77,255,0); }
+}
+.speaking { animation: audioPulse .6s ease-out 2; }
+
+/* ── MAIN ── */
+.main { padding: 28px 32px; max-width: 900px; margin: 0 auto; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── LEVEL BANNER ── */
+.level-banner {
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 14px;
+  font-weight: 800; font-size: 15px;
+}
+.level-banner .lv-icon { font-size: 32px; }
+.level-banner .lv-title { font-family: 'Fredoka One', sans-serif; font-size: 20px; }
+.level-banner .lv-desc { font-size: 13px; font-weight: 600; opacity: .75; }
+.lv1 .level-banner { background: #FFE0ED; border: 2px solid var(--pink); }
+.lv2 .level-banner { background: #FFE8C0; border: 2px solid var(--orange); }
+.lv3 .level-banner { background: #D4F8DA; border: 2px solid var(--green); }
+
+/* ── QUIZ AREA ── */
+.quiz-area {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; align-items: start;
+}
+.clock-box {
+  background: white; border-radius: var(--radius);
+  padding: 28px; text-align: center;
+  box-shadow: var(--shadow);
+  border: 2px solid rgba(0,0,0,0.06);
+}
+.clock-svg-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+.clock-svg-wrap svg { filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+
+.answers-box {
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.score-bar {
+  display: flex; gap: 10px; justify-content: center;
+  margin-bottom: 18px;
+}
+.score-pill {
+  background: white; border-radius: 999px;
+  padding: 7px 20px; font-size: 14px; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 2px solid transparent;
+}
+.score-pill.correct { border-color: var(--green); color: #2a7a30; }
+.score-pill.wrong   { border-color: var(--pink);  color: #b5185e; }
+.score-pill.streak  { border-color: var(--orange); color: #b35a00; }
+
+.ans-btn {
+  width: 100%; padding: 16px 12px;
+  border: 3px solid #E0E0E0; border-radius: var(--radius-sm);
+  background: white; font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  text-align: left; transition: all .15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  color: var(--dark);
+}
+.ans-btn:hover:not(:disabled) {
+  border-color: var(--blue); background: #EFF6FF;
+  transform: translateX(4px);
+}
+.ans-btn.correct { border-color: var(--green)!important; background: #E8FBE8!important; color: #1a6b22!important; }
+.ans-btn.wrong   { border-color: var(--pink)!important;  background: #FFF0F5!important; color: #a01545!important; }
+.ans-btn .ans-icon { margin-right: 10px; font-size: 18px; }
+
+.feedback-box {
+  background: white; border-radius: var(--radius);
+  padding: 16px 20px; text-align: center;
+  font-size: 20px; font-weight: 800;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow); border: 3px solid var(--gray2, #eee);
+  margin-top: 4px;
+  transition: all .3s;
+}
+.feedback-box.good { border-color: var(--green); color: #1a6b22; background: #E8FBE8; }
+.feedback-box.bad  { border-color: var(--pink);  color: #a01545; background: #FFF0F5; }
+
+.next-btn {
+  width: 100%; margin-top: 12px; padding: 15px;
+  border: none; border-radius: var(--radius-sm);
+  background: var(--dark); color: var(--yellow);
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 18px; cursor: pointer; transition: all .2s;
+  letter-spacing: .5px;
+  box-shadow: 0 4px 14px rgba(45,45,68,0.3);
+}
+.next-btn:hover { background: #1a1a2e; transform: translateY(-2px); }
+.next-btn:disabled { background: #ccc; color: #999; cursor: default; transform: none; box-shadow: none; }
+
+/* ── MODE: "FIND THE CLOCK" ── */
+.clocks-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;
+  margin-bottom: 16px;
+}
+.clock-choice {
+  border: 3px solid #E0E0E0; border-radius: var(--radius);
+  padding: 12px 8px; text-align: center;
+  cursor: pointer; background: white; transition: all .2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.clock-choice:hover:not(:disabled) { border-color: var(--blue); transform: scale(1.04); }
+.clock-choice.correct { border-color: var(--green)!important; background: #E8FBE8!important; }
+.clock-choice.wrong   { border-color: var(--pink)!important;  background: #FFF0F5!important; }
+
+/* ── BINGO ── */
+.bingo-header {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+  border-radius: var(--radius); padding: 16px 24px;
+  text-align: center; color: white; margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(155,114,207,0.35);
+}
+.bingo-header h2 { font-family: 'Fredoka One', sans-serif; font-size: 26px; margin-bottom: 4px; }
+.bingo-header p  { font-size: 13px; opacity: .85; }
+
+.bingo-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+.bingo-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+}
+.bingo-cell {
+  aspect-ratio: 1;
+  border: 3px solid #D0D0E0; border-radius: var(--radius);
+  background: white; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+  padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  user-select: none;
+}
+.bingo-cell:hover:not(.free) { border-color: var(--purple); transform: scale(1.04); }
+.bingo-cell.marked { background: #EDE0FF; border-color: var(--purple); }
+.bingo-cell.free   { background: #FFF5CC; border-color: var(--yellow); cursor: default; }
+.bingo-cell.win    { background: #FFFACD; border-color: var(--yellow); animation: bpulse .5s ease-in-out 4; }
+@keyframes bpulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.bingo-cell .bc-time { font-family: 'Fredoka One', sans-serif; font-size: 13px; color: var(--dark); margin-top: 4px; text-align: center; line-height: 1.2; }
+.bingo-cell .bc-label { font-size: 10px; color: #888; font-weight: 700; margin-top: 2px; }
+
+.bingo-panel {
+  background: white; border-radius: var(--radius);
+  border: 2px solid #E0E0E0; padding: 18px;
+  box-shadow: var(--shadow);
+}
+.called-display {
+  background: var(--dark); color: white;
+  border-radius: var(--radius-sm); padding: 16px;
+  text-align: center; margin-bottom: 12px; min-height: 110px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px;
+}
+.called-time-text { font-family: 'Fredoka One', sans-serif; font-size: 22px; color: var(--yellow); }
+.called-sub { font-size: 12px; opacity: .6; }
+
+.bingo-btn {
+  display: block; width: 100%; padding: 12px;
+  border: 2px solid #E0E0E0; border-radius: var(--radius-sm);
+  background: white; font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  color: var(--dark); transition: all .15s; margin-bottom: 8px;
+}
+.bingo-btn:hover { background: #F5F5F5; }
+.bingo-btn.primary {
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  color: white; border: none; font-size: 15px; padding: 14px;
+  box-shadow: 0 4px 14px rgba(77,150,255,0.35);
+}
+.bingo-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(77,150,255,0.45); }
+
+.called-chips-wrap { margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+.called-chips-label { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; margin-bottom: 6px; font-weight: 700; }
+.called-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.called-chip { background: #F0F0F0; border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 700; color: #666; }
+
+.bingo-announce {
+  text-align: center; font-family: 'Fredoka One', sans-serif;
+  font-size: 24px; color: var(--purple); min-height: 34px; margin-bottom: 10px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .main { padding: 14px; }
+  .quiz-area { grid-template-columns: 1fr; }
+  .clocks-grid { grid-template-columns: repeat(2,1fr); }
+  .bingo-layout { grid-template-columns: 1fr; }
+  .header { padding: 12px 16px; }
+  .tabs-bar { padding: 8px 10px 0; gap: 4px; overflow-x: auto; }
+  .tab-btn { padding: 8px 12px; font-size: 12px; }
+}
+
+/* ── MISC ── */
+.mode-toggle {
+  display: flex; gap: 8px; margin-bottom: 18px;
+}
+.mode-btn {
+  flex: 1; padding: 10px;
+  border: 2px solid #E0E0E0; border-radius: var(--radius-sm);
+  background: white; font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  color: #888; transition: all .15s;
+}
+.mode-btn.active { background: var(--dark); color: var(--yellow); border-color: var(--dark); }
+
+.prompt-text {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 22px; text-align: center; margin-bottom: 20px;
+  color: var(--dark);
+}
+.prompt-hint { font-size: 14px; font-weight: 600; color: #999; text-align: center; margin-bottom: 10px; }
+
+.congrats-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 999;
+  align-items: center; justify-content: center;
+}
+.congrats-overlay.show { display: flex; }
+.congrats-box {
+  background: white; border-radius: 24px; padding: 40px 48px;
+  text-align: center; max-width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{transform:scale(.5);opacity:0} to{transform:scale(1);opacity:1} }
+.congrats-box .big-emoji { font-size: 72px; display: block; margin-bottom: 12px; }
+.congrats-box h2 { font-family: 'Fredoka One', sans-serif; font-size: 30px; color: var(--dark); margin-bottom: 8px; }
+.congrats-box p { font-size: 16px; color: #666; margin-bottom: 20px; }
+.congrats-close {
+  background: var(--dark); color: var(--yellow);
+  border: none; border-radius: 12px; padding: 12px 28px;
+  font-family: 'Fredoka One', sans-serif; font-size: 18px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="header-icon">⏰</span>
+  <div class="header-text">
+    <div class="header-title">What Time Is It? 🕐</div>
+    <div class="header-sub">Inglese – Lettura dell'orologio | Primaria</div>
+  </div>
+  <div class="header-badge">3 Livelli + Bingo</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn study active" onclick="setTab('study')">📖 Imparo l'Ora</button>
+  <button class="tab-btn lv1" onclick="setTab('lv1')">🌟 Livello 1</button>
+  <button class="tab-btn lv2" onclick="setTab('lv2')">⭐ Livello 2</button>
+  <button class="tab-btn lv3" onclick="setTab('lv3')">🚀 Livello 3</button>
+  <button class="tab-btn bingo" onclick="setTab('bingo')">🎉 Bingo</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ── STUDY PAGE ── -->
+  <div id="tab-study" class="screen active">
+    <div class="study-banner">
+      <span class="sb-icon">📖</span>
+      <div>
+        <h2>Imparo a leggere l'orologio in inglese! ⏰</h2>
+        <p>Clicca sugli esempi per sentire come si pronuncia • Tocca 🇮🇹 per vedere la traduzione in italiano</p>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE CLOCK + RULES -->
+    <div class="study-layout">
+
+      <!-- LEFT: interactive clock -->
+      <div class="study-clock-box">
+        <h3>🖱 Orologio interattivo</h3>
+        <div id="study-svg-wrap" onclick="studyClockClick(event)"></div>
+        <div class="study-time-display" id="study-time-text">It's three o'clock</div>
+        <div class="study-digital" id="study-digital">03:00</div>
+        <div class="hands-legend">
+          <div class="hand-leg"><div class="hand-dot hour"></div> ore (corta)</div>
+          <div class="hand-leg"><div class="hand-dot min"></div> minuti (lunga)</div>
+        </div>
+        <div class="study-hand-btns">
+          <button class="hand-btn hour" id="btn-hour" onclick="setHandMode('hour')">🔴 Muovi ore</button>
+          <button class="hand-btn min"  id="btn-min"  onclick="setHandMode('min')">⚫ Muovi minuti</button>
+        </div>
+        <div style="font-size:11px;color:#aaa;margin-top:8px;font-weight:700;">Clicca sulla lancetta da spostare,<br>poi clicca sul numero</div>
+        <button onclick="speakStudyClock()" style="margin-top:12px;width:100%;padding:10px;border:2px solid #7C4DFF;border-radius:10px;background:#F5F0FF;font-family:Nunito,sans-serif;font-size:14px;font-weight:800;color:#7C4DFF;cursor:pointer;" id="study-speak-btn">🔊 Ascolta l'ora</button>
+      </div>
+
+      <!-- RIGHT: rule cards -->
+      <div class="study-info-panel" id="study-info-panel">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- PRESET TIMES -->
+    <div style="margin-bottom:12px;">
+      <div style="font-family:'Fredoka One',sans-serif;font-size:17px;color:var(--dark);margin-bottom:10px;">⏰ Scegli un orario da studiare:</div>
+      <div class="presets-row" id="presets-row"></div>
+    </div>
+
+  </div>
+
+  <!-- LV1 -->
+  <div id="tab-lv1" class="screen lv1 active">
+    <div class="level-banner">
+      <span class="lv-icon">🌟</span>
+      <div>
+        <div class="lv-title">Livello 1 – O'clock & Half past</div>
+        <div class="lv-desc">Ore esatte e mezze ore • "It's three o'clock" / "It's half past two"</div>
+      </div>
+    </div>
+    <div id="lv1-area"></div>
+  </div>
+
+  <!-- LV2 -->
+  <div id="tab-lv2" class="screen lv2">
+    <div class="level-banner">
+      <span class="lv-icon">⭐</span>
+      <div>
+        <div class="lv-title">Livello 2 – Quarter past & Quarter to</div>
+        <div class="lv-desc">Quarti d'ora • "It's quarter past four" / "It's quarter to six"</div>
+      </div>
+    </div>
+    <div id="lv2-area"></div>
+  </div>
+
+  <!-- LV3 -->
+  <div id="tab-lv3" class="screen lv3">
+    <div class="level-banner">
+      <span class="lv-icon">🚀</span>
+      <div>
+        <div class="lv-title">Livello 3 – Past & To (5 minuti)</div>
+        <div class="lv-desc">Tutti gli orari • "It's twenty past seven" / "It's ten to nine"</div>
+      </div>
+    </div>
+    <div id="lv3-area"></div>
+  </div>
+
+  <!-- BINGO -->
+  <div id="tab-bingo" class="screen">
+    <div class="bingo-header">
+      <h2>⏰ Time Bingo! 🎉</h2>
+      <p>L'insegnante chiama un orario – trova la cella e marcala! Prima riga → BINGO!</p>
+    </div>
+    <div class="bingo-layout">
+      <div>
+        <div class="bingo-announce" id="bingo-announce"></div>
+        <div class="bingo-grid" id="bingo-grid"></div>
+      </div>
+      <div class="bingo-panel">
+        <div class="called-display" id="bingo-called">
+          <span style="font-size:36px">⏰</span>
+          <span class="called-time-text">Ready?</span>
+          <span class="called-sub">Premi il pulsante!</span>
+        </div>
+        <button class="bingo-btn primary" onclick="bingoCall()">📢 Chiama orario!</button>
+        <button class="bingo-btn" onclick="initBingo()">🔄 Nuova partita</button>
+        <div class="called-chips-wrap" id="bingo-chips-wrap" style="display:none">
+          <div class="called-chips-label">Già chiamati:</div>
+          <div class="called-chips" id="bingo-chips"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CONGRATS -->
+<div class="congrats-overlay" id="congrats">
+  <div class="congrats-box">
+    <span class="big-emoji" id="congrats-emoji">🎉</span>
+    <h2 id="congrats-title">Well done!</h2>
+    <p id="congrats-msg">You got 10 correct!</p>
+    <button class="congrats-close" onclick="closeCongracts()">Play again! 🔄</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  CLOCK DRAWING UTILITY
+// ═══════════════════════════════════════════════
+function drawClock(h, m, size=160, color='#FF6B9D') {
+  const r = size/2, cx=r, cy=r;
+  const toRad = deg => deg * Math.PI / 180;
+
+  // Hour hand: 360/12=30deg per hour + 0.5deg per minute
+  const hourAngle  = ((h % 12) * 30 + m * 0.5) - 90;
+  const minAngle   = m * 6 - 90;
+
+  const hLen = r * 0.52, mLen = r * 0.70;
+  const hx = cx + hLen * Math.cos(toRad(hourAngle));
+  const hy = cy + hLen * Math.sin(toRad(hourAngle));
+  const mx = cx + mLen * Math.cos(toRad(minAngle));
+  const my = cy + mLen * Math.sin(toRad(minAngle));
+
+  // tick marks
+  let ticks = '';
+  for(let i=0; i<12; i++){
+    const a = toRad(i*30 - 90);
+    const isHour = true;
+    const x1 = cx + (r-6) * Math.cos(a);
+    const y1 = cy + (r-6) * Math.sin(a);
+    const x2 = cx + (r-14) * Math.cos(a);
+    const y2 = cy + (r-14) * Math.sin(a);
+    ticks += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`;
+  }
+  // minute ticks
+  for(let i=0; i<60; i++){
+    if(i%5===0) continue;
+    const a = toRad(i*6 - 90);
+    const x1 = cx + (r-6) * Math.cos(a);
+    const y1 = cy + (r-6) * Math.sin(a);
+    const x2 = cx + (r-10) * Math.cos(a);
+    const y2 = cy + (r-10) * Math.sin(a);
+    ticks += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}55" stroke-width="1.5" stroke-linecap="round"/>`;
+  }
+
+  // numbers
+  let nums = '';
+  const numLabels=[12,1,2,3,4,5,6,7,8,9,10,11];
+  for(let i=0; i<12; i++){
+    const a = toRad(i*30 - 90);
+    const nx = cx + (r-24)*Math.cos(a);
+    const ny = cy + (r-24)*Math.sin(a);
+    nums += `<text x="${nx.toFixed(1)}" y="${ny.toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-family="Fredoka One,sans-serif" font-size="${r*0.18}" fill="${color}" font-weight="bold">${numLabels[i]}</text>`;
+  }
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <!-- outer ring -->
+    <circle cx="${cx}" cy="${cy}" r="${r-1}" fill="white" stroke="${color}" stroke-width="3"/>
+    <circle cx="${cx}" cy="${cy}" r="${r-8}" fill="#FAFAFA" stroke="${color}30" stroke-width="1"/>
+    ${ticks}
+    ${nums}
+    <!-- hour hand -->
+    <line x1="${cx}" y1="${cy}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="${color}" stroke-width="${r*0.075}" stroke-linecap="round"/>
+    <!-- minute hand -->
+    <line x1="${cx}" y1="${cy}" x2="${mx.toFixed(1)}" y2="${my.toFixed(1)}" stroke="#2D2D44" stroke-width="${r*0.05}" stroke-linecap="round"/>
+    <!-- center dot -->
+    <circle cx="${cx}" cy="${cy}" r="${r*0.06}" fill="${color}"/>
+    <circle cx="${cx}" cy="${cy}" r="${r*0.025}" fill="white"/>
+  </svg>`;
+}
+
+// Small clock for bingo/choices
+function drawSmallClock(h, m, size=80, color='#9B72CF') {
+  return drawClock(h, m, size, color);
+}
+
+// ═══════════════════════════════════════════════
+//  TIME GENERATION & FORMATTING
+// ═══════════════════════════════════════════════
+const ORDINALS=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+const TENS=['','','twenty','twenty-five']; // we'll handle manually
+
+function numWord(n) {
+  const w=['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+           'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen',
+           'eighteen','nineteen','twenty','twenty-one','twenty-two','twenty-three',
+           'twenty-four','twenty-five','twenty-six','twenty-seven','twenty-eight','twenty-nine'];
+  return w[n] || n;
+}
+
+function formatTime(h, m, level) {
+  const hr = h % 12 === 0 ? 12 : h % 12;
+  const hrWord = ORDINALS[hr-1];
+  const nextHr = (hr % 12) + 1;
+  const nextHrWord = ORDINALS[nextHr-1];
+
+  if(m === 0)  return `It's ${hrWord} o'clock`;
+  if(m === 30) return `It's half past ${hrWord}`;
+  if(m === 15) return `It's quarter past ${hrWord}`;
+  if(m === 45) return `It's quarter to ${nextHrWord}`;
+  if(m < 30)   return `It's ${numWord(m)} past ${hrWord}`;
+  return `It's ${numWord(60-m)} to ${nextHrWord}`;
+}
+
+function formatTimeShort(h, m) {
+  const hh = String(h % 12 === 0 ? 12 : h % 12).padStart(2,'0');
+  const mm = String(m).padStart(2,'0');
+  return hh+':'+mm;
+}
+
+// ═══════════════════════════════════════════════
+//  LEVEL CONFIGS
+// ═══════════════════════════════════════════════
+const LEVEL_CFG = {
+  lv1: {
+    color: '#FF6B9D',
+    times: () => {
+      const t = [];
+      for(let h=1;h<=12;h++){ t.push({h,m:0}); t.push({h,m:30}); }
+      return t;
+    }
+  },
+  lv2: {
+    color: '#FF9A3C',
+    times: () => {
+      const t = [];
+      for(let h=1;h<=12;h++){
+        t.push({h,m:0}); t.push({h,m:15}); t.push({h,m:30}); t.push({h,m:45});
+      }
+      return t;
+    }
+  },
+  lv3: {
+    color: '#6BCB77',
+    times: () => {
+      const t = [];
+      for(let h=1;h<=12;h++){
+        [0,5,10,15,20,25,30,35,40,45,50,55].forEach(m => t.push({h,m}));
+      }
+      return t;
+    }
+  }
+};
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
+
+// ═══════════════════════════════════════════════
+//  QUIZ ENGINE
+// ═══════════════════════════════════════════════
+const quizState = {};
+
+function initLevel(lv) {
+  const cfg = LEVEL_CFG[lv];
+  const times = shuffle(cfg.times());
+  quizState[lv] = {
+    times, idx: 0, correct: 0, total: 0, streak: 0,
+    mode: 'read', // 'read' = see clock → choose text | 'find' = see text → choose clock
+    answered: false, color: cfg.color
+  };
+  renderQuiz(lv);
+}
+
+function renderQuiz(lv) {
+  const area = document.getElementById(lv+'-area');
+  area.innerHTML = `
+    <div class="mode-toggle">
+      <button class="mode-btn ${quizState[lv].mode==='read'?'active':''}" onclick="setMode('${lv}','read')">🕐 Guarda l'orologio → scegli l'ora</button>
+      <button class="mode-btn ${quizState[lv].mode==='find'?'active':''}" onclick="setMode('${lv}','find')">📖 Leggi l'ora → trova l'orologio</button>
+    </div>
+    <div class="score-bar">
+      <div class="score-pill correct">✅ Correct: <span id="${lv}-c">0</span></div>
+      <div class="score-pill wrong">❌ Wrong: <span id="${lv}-w">0</span></div>
+      <div class="score-pill streak" id="${lv}-sp" style="display:none">🔥 Streak: <span id="${lv}-s">0</span></div>
+    </div>
+    <div id="${lv}-question"></div>
+  `;
+  renderQuestion(lv);
+}
+
+function setMode(lv, mode) {
+  quizState[lv].mode = mode;
+  quizState[lv].answered = false;
+  renderQuiz(lv);
+}
+
+function renderQuestion(lv) {
+  const st = quizState[lv];
+  const qDiv = document.getElementById(lv+'-question');
+  const allTimes = LEVEL_CFG[lv].times();
+  const current = allTimes[Math.floor(Math.random()*allTimes.length)];
+  st.current = current;
+  st.answered = false;
+
+  if(st.mode === 'read') {
+    // Show clock → pick text answer
+    const correct = formatTime(current.h, current.m);
+    const wrongs = shuffle(allTimes.filter(t=>!(t.h===current.h&&t.m===current.m)))
+      .slice(0,3).map(t=>formatTime(t.h,t.m));
+    const opts = shuffle([correct,...wrongs]);
+
+    qDiv.innerHTML = `
+      <div class="quiz-area">
+        <div class="clock-box">
+          <div class="clock-svg-wrap">${drawClock(current.h, current.m, 180, st.color)}</div>
+          <div style="font-size:13px;color:#999;font-weight:700;margin-top:8px">${formatTimeShort(current.h,current.m)}</div>
+        </div>
+        <div class="answers-box">
+          <div class="prompt-text">What time is it? 🤔</div>
+          ${opts.map(o=>`<button class="ans-btn" onclick="answerRead('${lv}',this,'${o.replace(/'/g,"\\'")}','${correct.replace(/'/g,"\\'")}')"><span class="ans-icon">🕐</span>${o}</button>`).join('')}
+          <div class="feedback-box" id="${lv}-fb">Choose an answer! 👆</div>
+          <button class="next-btn" id="${lv}-next" onclick="nextQ('${lv}')" disabled>Next question →</button>
+        </div>
+      </div>
+    `;
+  } else {
+    // Show text → pick clock
+    const correct = current;
+    const wrongTimes = shuffle(allTimes.filter(t=>!(t.h===current.h&&t.m===current.m))).slice(0,3);
+    const opts = shuffle([correct,...wrongTimes]);
+    const text = formatTime(current.h, current.m);
+
+    qDiv.innerHTML = `
+      <div class="prompt-text">${text} 🕐</div>
+      <div class="prompt-hint">Click the right clock!</div>
+      <div class="clocks-grid">
+        ${opts.map((t,i)=>`
+          <div class="clock-choice" onclick="answerFind('${lv}',this,${t.h},${t.m},${correct.h},${correct.m})">
+            ${drawSmallClock(t.h, t.m, 100, st.color)}
+            <div style="font-size:11px;color:#888;font-weight:700;margin-top:4px">${formatTimeShort(t.h,t.m)}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="${lv}-fb">Find the right clock! 👆</div>
+      <button class="next-btn" id="${lv}-next" onclick="nextQ('${lv}')" disabled>Next question →</button>
+    `;
+  }
+}
+
+function answerRead(lv, btn, chosen, correct) {
+  const st = quizState[lv];
+  if(st.answered) return;
+  st.answered = true; st.total++;
+  const isCorrect = chosen === correct;
+
+  document.querySelectorAll(`#${lv}-question .ans-btn`).forEach(b => {
+    b.disabled = true;
+    if(b.querySelector('.ans-icon').nextSibling.textContent.trim() === correct || b.textContent.trim().replace(/^🕐/,'').trim() === correct) {
+      // just mark the correct one
+    }
+  });
+
+  if(isCorrect) {
+    btn.classList.add('correct');
+    st.correct++; st.streak++;
+    showFeedback(lv, true);
+  } else {
+    btn.classList.add('wrong');
+    st.streak = 0;
+    // highlight correct
+    document.querySelectorAll(`#${lv}-question .ans-btn`).forEach(b=>{
+      if(b.textContent.includes(correct)) b.classList.add('correct');
+    });
+    showFeedback(lv, false, correct);
+  }
+  updateScore(lv);
+  document.getElementById(lv+'-next').disabled = false;
+}
+
+function answerFind(lv, cell, h, m, ch, cm) {
+  const st = quizState[lv];
+  if(st.answered) return;
+  st.answered = true; st.total++;
+  const isCorrect = (h===ch && m===cm);
+  document.querySelectorAll(`#${lv}-question .clock-choice`).forEach(c=>c.onclick=null);
+
+  if(isCorrect) {
+    cell.classList.add('correct'); st.correct++; st.streak++;
+    showFeedback(lv, true);
+  } else {
+    cell.classList.add('wrong'); st.streak = 0;
+    document.querySelectorAll(`#${lv}-question .clock-choice`).forEach(c=>{
+      const svg = c.querySelector('svg');
+      // find correct cell
+      if(c.textContent.includes(formatTimeShort(ch,cm))) c.classList.add('correct');
+    });
+    showFeedback(lv, false, formatTime(ch,cm));
+  }
+  updateScore(lv);
+  document.getElementById(lv+'-next').disabled = false;
+}
+
+const GOOD_MSGS = ["Well done! 🐱","Excellent! ⭐","It's all good! 🎉","Great job! ⏰","Super! 🌟","Amazing! 🚀","Brilliant! 💫"];
+
+function showFeedback(lv, correct, answer='') {
+  const fb = document.getElementById(lv+'-fb');
+  if(correct) {
+    fb.textContent = GOOD_MSGS[Math.floor(Math.random()*GOOD_MSGS.length)];
+    fb.className = 'feedback-box good';
+  } else {
+    fb.textContent = `Not quite! → ${answer}`;
+    fb.className = 'feedback-box bad';
+  }
+}
+
+function updateScore(lv) {
+  const st = quizState[lv];
+  document.getElementById(lv+'-c').textContent = st.correct;
+  document.getElementById(lv+'-w').textContent = st.total - st.correct;
+  const sp = document.getElementById(lv+'-sp');
+  if(st.streak >= 3) { sp.style.display=''; document.getElementById(lv+'-s').textContent=st.streak; }
+  if(st.correct > 0 && st.correct % 10 === 0 && st.answered) {
+    setTimeout(()=>showCongrats(lv, st.correct, st.total), 600);
+  }
+}
+
+function nextQ(lv) {
+  renderQuestion(lv);
+}
+
+// ═══════════════════════════════════════════════
+//  CONGRATS
+// ═══════════════════════════════════════════════
+let congratsLv = '';
+function showCongrats(lv, correct, total) {
+  congratsLv = lv;
+  const pct = Math.round(correct/total*100);
+  document.getElementById('congrats-emoji').textContent = pct>=80?'🏆':'🎉';
+  document.getElementById('congrats-title').textContent = pct>=80?'Fantastic!':'Well done!';
+  document.getElementById('congrats-msg').textContent = `${correct} correct out of ${total} (${pct}%)`;
+  document.getElementById('congrats').classList.add('show');
+}
+function closeCongracts() {
+  document.getElementById('congrats').classList.remove('show');
+  if(congratsLv) initLevel(congratsLv);
+}
+
+// ═══════════════════════════════════════════════
+//  STUDY PAGE
+// ═══════════════════════════════════════════════
+
+const RULES = [
+  {
+    cls: 'oclock', emoji: '🕛', title: "O'clock – ore esatte",
+    formula: "It's [ORA] o'clock",
+    when: "Quando i minuti sono 00 → lancetta lunga punta in alto (12)",
+    examples: [
+      { h:1,  m:0, en:"It's one o'clock",    it:"È l'una" },
+      { h:3,  m:0, en:"It's three o'clock",  it:"Sono le tre" },
+      { h:7,  m:0, en:"It's seven o'clock",  it:"Sono le sette" },
+      { h:12, m:0, en:"It's twelve o'clock", it:"Sono le dodici" },
+    ]
+  },
+  {
+    cls: 'half', emoji: '🕧', title: "Half past – e mezza",
+    formula: "It's half past [ORA]",
+    when: "Quando i minuti sono 30 → lancetta lunga punta in basso (6)",
+    examples: [
+      { h:2,  m:30, en:"It's half past two",   it:"Sono le due e mezza" },
+      { h:5,  m:30, en:"It's half past five",   it:"Sono le cinque e mezza" },
+      { h:10, m:30, en:"It's half past ten",    it:"Sono le dieci e mezza" },
+    ]
+  },
+  {
+    cls: 'quarter', emoji: '🕒', title: "Quarter past / Quarter to – e un quarto / meno un quarto",
+    formula: "It's quarter past [ORA]  •  It's quarter to [ORA+1]",
+    when: "15 minuti = quarter past | 45 minuti = quarter to (ora successiva!)",
+    examples: [
+      { h:4,  m:15, en:"It's quarter past four",  it:"Sono le quattro e un quarto" },
+      { h:9,  m:15, en:"It's quarter past nine",  it:"Sono le nove e un quarto" },
+      { h:4,  m:45, en:"It's quarter to five",    it:"Sono le cinque meno un quarto" },
+      { h:11, m:45, en:"It's quarter to twelve",  it:"Sono le dodici meno un quarto" },
+    ]
+  },
+  {
+    cls: 'past', emoji: '➡️', title: "Past – e ... (0–29 min)",
+    formula: "It's [MINUTI] past [ORA]",
+    when: "Quando i minuti sono tra 1 e 29 → diciamo quanti minuti SONO PASSATI",
+    examples: [
+      { h:2,  m:10, en:"It's ten past two",      it:"Sono le due e dieci" },
+      { h:6,  m:20, en:"It's twenty past six",   it:"Sono le sei e venti" },
+      { h:8,  m:25, en:"It's twenty-five past eight", it:"Sono le otto e venticinque" },
+    ]
+  },
+  {
+    cls: 'to', emoji: '⬅️', title: "To – meno ... (30–59 min)",
+    formula: "It's [60−MINUTI] to [ORA+1]",
+    when: "Quando i minuti sono tra 31 e 59 → diciamo quanti mancano all'ora SUCCESSIVA",
+    examples: [
+      { h:3,  m:50, en:"It's ten to four",          it:"Sono le quattro meno dieci" },
+      { h:7,  m:40, en:"It's twenty to eight",      it:"Sono le otto meno venti" },
+      { h:11, m:35, en:"It's twenty-five to twelve",it:"Sono le dodici meno venticinque" },
+    ]
+  },
+];
+
+const PRESETS = [
+  {h:3,m:0}, {h:6,m:30}, {h:9,m:15}, {h:2,m:45},
+  {h:4,m:10}, {h:7,m:20}, {h:1,m:50}, {h:5,m:35},
+  {h:12,m:0}, {h:8,m:5},
+];
+
+let studyH = 3, studyM = 0, studyHandMode = 'hour';
+
+function buildStudyPage() {
+  // Render interactive clock
+  renderStudyClock();
+
+  // Render rule cards
+  const panel = document.getElementById('study-info-panel');
+  panel.innerHTML = RULES.map((r,ri) => `
+    <div class="rule-card ${r.cls}" id="rule-${ri}">
+      <div class="rule-header">
+        <span class="rule-emoji">${r.emoji}</span>
+        <div>
+          <div class="rule-title">${r.title}</div>
+          <div style="font-size:12px;color:#999;font-weight:700;margin-top:2px;">${r.when}</div>
+        </div>
+      </div>
+      <div class="rule-formula">${r.formula}</div>
+      <div class="rule-examples">
+        ${r.examples.map(ex => `
+          <div class="rule-ex" onclick="studyLoadExample(${ex.h},${ex.m},'${ex.en.replace(/'/g,"\\'")}')" title="Clicca per vedere sull'orologio">
+            <span class="ex-audio">🔊</span>
+            <span>${ex.en}</span>
+            <span class="trans-badge" onclick="event.stopPropagation();toggleTrans(this)" title="Vedi in italiano">
+              🇮🇹 <span class="trans-hide">Traduzione</span><span class="trans-text">${ex.it}</span>
+            </span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // Render presets
+  const pr = document.getElementById('presets-row');
+  pr.innerHTML = PRESETS.map((t,i) => `
+    <button class="preset-btn ${i===0?'active-preset':''}" id="preset-${i}" onclick="studyLoadPreset(${t.h},${t.m},${i})">
+      ${drawSmallClock(t.h, t.m, 52, '#7C4DFF')}
+      <span class="pb-time">${formatTimeShort(t.h,t.m)}</span>
+      <span class="pb-label">${formatTime(t.h,t.m).replace("It's ",'')}</span>
+    </button>
+  `).join('');
+}
+
+function renderStudyClock() {
+  document.getElementById('study-svg-wrap').innerHTML = drawStudyInteractiveClock(studyH, studyM);
+  const text = formatTime(studyH, studyM);
+  document.getElementById('study-time-text').textContent = text;
+  document.getElementById('study-digital').textContent = formatTimeShort(studyH, studyM);
+  highlightActiveRule();
+}
+
+function drawStudyInteractiveClock(h, m, size=220) {
+  const r=size/2, cx=r, cy=r;
+  const toRad=deg=>deg*Math.PI/180;
+  const color='#7C4DFF';
+  const hourAngle=((h%12)*30+m*0.5)-90;
+  const minAngle=m*6-90;
+  const hLen=r*0.50, mLen=r*0.68;
+  const hx=cx+hLen*Math.cos(toRad(hourAngle)), hy=cy+hLen*Math.sin(toRad(hourAngle));
+  const mx=cx+mLen*Math.cos(toRad(minAngle)),  my=cy+mLen*Math.sin(toRad(minAngle));
+
+  // Ticks
+  let ticks='';
+  for(let i=0;i<12;i++){
+    const a=toRad(i*30-90);
+    const x1=cx+(r-6)*Math.cos(a), y1=cy+(r-6)*Math.sin(a);
+    const x2=cx+(r-16)*Math.cos(a), y2=cy+(r-16)*Math.sin(a);
+    ticks+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>`;
+  }
+  for(let i=0;i<60;i++){
+    if(i%5===0) continue;
+    const a=toRad(i*6-90);
+    const x1=cx+(r-6)*Math.cos(a), y1=cy+(r-6)*Math.sin(a);
+    const x2=cx+(r-10)*Math.cos(a), y2=cy+(r-10)*Math.sin(a);
+    ticks+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}44" stroke-width="1.5" stroke-linecap="round"/>`;
+  }
+
+  // Numbers as clickable elements
+  const numLabels=[12,1,2,3,4,5,6,7,8,9,10,11];
+  let nums='';
+  for(let i=0;i<12;i++){
+    const a=toRad(i*30-90);
+    const nx=cx+(r-28)*Math.cos(a), ny=cy+(r-28)*Math.sin(a);
+    const nr=numLabels[i]; // the hour number
+    nums+=`<text x="${nx.toFixed(1)}" y="${ny.toFixed(1)}" text-anchor="middle" dominant-baseline="central"
+      font-family="Fredoka One,sans-serif" font-size="${r*0.155}" fill="${color}" font-weight="bold"
+      style="cursor:pointer;user-select:none" onclick="studyClickNumber(${nr})"
+      title="Clicca per spostare la lancetta su ${nr}">${nr}</text>`;
+  }
+
+  // Minute markers (5,10,15...55) as small dots
+  let minDots='';
+  const minNums=[5,10,15,20,25,30,35,40,45,50,55];
+  for(let i=0;i<11;i++){
+    const deg=(i+1)*30-90;
+    const a=toRad(deg);
+    const dx=cx+(r-44)*Math.cos(a), dy=cy+(r-44)*Math.sin(a);
+    minDots+=`<text x="${dx.toFixed(1)}" y="${dy.toFixed(1)}" text-anchor="middle" dominant-baseline="central"
+      font-family="Nunito,sans-serif" font-size="${r*0.1}" fill="#AAAACC" font-weight="800"
+      style="cursor:pointer;user-select:none" onclick="studyClickMinute(${minNums[i]})">${minNums[i]}</text>`;
+  }
+
+  // Active hand highlight
+  const hColor = studyHandMode==='hour' ? '#FF6B9D' : '#2D2D44';
+  const mColor = studyHandMode==='min'  ? '#4D96FF' : '#2D2D44';
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r-2}" fill="white" stroke="${color}" stroke-width="4"/>
+    <circle cx="${cx}" cy="${cy}" r="${r-10}" fill="#FAFBFF" stroke="${color}20" stroke-width="1"/>
+    ${ticks}
+    ${minDots}
+    ${nums}
+    <!-- HOUR HAND -->
+    <line x1="${cx}" y1="${cy}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}"
+      stroke="${hColor}" stroke-width="${r*0.085}" stroke-linecap="round"
+      style="cursor:pointer;" onclick="setHandMode('hour')" title="Lancetta delle ORE"/>
+    <!-- MIN HAND -->
+    <line x1="${cx}" y1="${cy}" x2="${mx.toFixed(1)}" y2="${my.toFixed(1)}"
+      stroke="${mColor}" stroke-width="${r*0.055}" stroke-linecap="round"
+      style="cursor:pointer;" onclick="setHandMode('min')" title="Lancetta dei MINUTI"/>
+    <!-- Center -->
+    <circle cx="${cx}" cy="${cy}" r="${r*0.065}" fill="${color}"/>
+    <circle cx="${cx}" cy="${cy}" r="${r*0.028}" fill="white"/>
+  </svg>`;
+}
+
+function setHandMode(mode) {
+  studyHandMode = mode;
+  document.getElementById('btn-hour').classList.toggle('active-hand', mode==='hour');
+  document.getElementById('btn-min').classList.toggle('active-hand', mode==='min');
+  renderStudyClock();
+}
+
+function studyClickNumber(n) {
+  if(studyHandMode === 'hour') {
+    studyH = n === 12 ? 12 : n;
+  } else {
+    studyM = (n === 12) ? 0 : n * 5;
+  }
+  renderStudyClock();
+  autoSpeak();
+}
+
+function studyClickMinute(min) {
+  if(studyHandMode === 'min') {
+    studyM = min;
+    renderStudyClock();
+    autoSpeak();
+  }
+}
+
+function studyClockClick(e) { /* handled by child elements */ }
+
+function studyLoadExample(h, m, text) {
+  studyH = h; studyM = m;
+  renderStudyClock();
+  speakText(text);
+  // scroll to clock
+  document.getElementById('tab-study').scrollIntoView({behavior:'smooth', block:'start'});
+  // update presets
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active-preset'));
+}
+
+function studyLoadPreset(h, m, idx) {
+  studyH = h; studyM = m;
+  renderStudyClock();
+  autoSpeak();
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active-preset'));
+  document.getElementById('preset-'+idx)?.classList.add('active-preset');
+}
+
+function highlightActiveRule() {
+  const m = studyM;
+  document.querySelectorAll('.rule-card').forEach(c=>c.classList.remove('active-rule'));
+  let ruleIdx = 0;
+  if(m === 0)               ruleIdx = 0; // o'clock
+  else if(m === 30)         ruleIdx = 1; // half past
+  else if(m === 15 || m===45) ruleIdx = 2; // quarter
+  else if(m < 30)           ruleIdx = 3; // past
+  else                      ruleIdx = 4; // to
+  document.getElementById('rule-'+ruleIdx)?.classList.add('active-rule');
+}
+
+function toggleTrans(badge) {
+  badge.classList.toggle('shown');
+}
+
+// ── SPEECH ──
+let speaking = false;
+function speakText(text, lang='en-GB') {
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = lang; utt.rate = 0.88; utt.pitch = 1.05;
+  const btn = document.getElementById('study-speak-btn');
+  if(btn) { btn.classList.add('speaking'); utt.onend=()=>btn.classList.remove('speaking'); }
+  window.speechSynthesis.speak(utt);
+}
+
+function speakStudyClock() {
+  speakText(formatTime(studyH, studyM));
+}
+
+let autoSpeakTimer = null;
+function autoSpeak() {
+  clearTimeout(autoSpeakTimer);
+  autoSpeakTimer = setTimeout(()=>speakStudyClock(), 500);
+}
+
+// ═══════════════════════════════════════════════
+//  TABS (updated to include study)
+// ═══════════════════════════════════════════════
+function setTab(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelector('.tab-btn.'+id).classList.add('active');
+  if(['lv1','lv2','lv3'].includes(id) && !quizState[id]) initLevel(id);
+  if(id==='bingo' && !bingoReady) initBingo();
+}
+
+// ═══════════════════════════════════════════════
+//  BINGO
+// ═══════════════════════════════════════════════
+let bingoTimes=[], bingoCalled=[], bingoGridState=[], bingoReady=false;
+
+// All nice round times for bingo
+const BINGO_POOL = [];
+for(let h=1;h<=12;h++){
+  [0,15,30,45].forEach(m=>BINGO_POOL.push({h,m}));
+}
+
+function initBingo() {
+  bingoReady = true;
+  bingoCalled = [];
+  const shuffled = shuffle(BINGO_POOL);
+  const cells8 = shuffled.slice(0,8);
+  // insert FREE in center (pos 4)
+  const allCells = [...cells8.slice(0,4), null, ...cells8.slice(4)];
+  bingoTimes = cells8;
+  bingoGridState = [];
+
+  const grid = document.getElementById('bingo-grid');
+  grid.innerHTML = '';
+  bingoGridState = [];
+
+  allCells.forEach((t, i) => {
+    const isFree = t === null;
+    const cell = document.createElement('div');
+    cell.className = 'bingo-cell' + (isFree?' free':'');
+    if(isFree) {
+      cell.innerHTML = `<span style="font-size:28px">⏰</span><span class="bc-time">FREE</span>`;
+      cell.dataset.marked = '1';
+    } else {
+      const clr = ['#FF6B9D','#FF9A3C','#4D96FF','#6BCB77','#9B72CF','#38CFBD','#FFD93D','#FF6B9D'][i%8];
+      cell.innerHTML = drawSmallClock(t.h, t.m, 72, clr) + `<span class="bc-time">${formatTime(t.h,t.m).replace("It's ",'')}</span>`;
+      cell.dataset.marked = '0';
+      cell.onclick = () => {
+        if(!bingoCalled.find(c=>c.h===t.h&&c.m===t.m)) return;
+        cell.classList.toggle('marked');
+        cell.dataset.marked = cell.classList.contains('marked')?'1':'0';
+        checkBingoWin();
+      };
+    }
+    grid.appendChild(cell);
+    bingoGridState.push({el:cell, time:t, free:isFree});
+  });
+
+  document.getElementById('bingo-called').innerHTML=`<span style="font-size:36px">⏰</span><span class="called-time-text">Ready?</span><span class="called-sub">Premi il pulsante!</span>`;
+  document.getElementById('bingo-announce').textContent='';
+  document.getElementById('bingo-chips-wrap').style.display='none';
+  document.getElementById('bingo-chips').innerHTML='';
+}
+
+function bingoCall() {
+  const remaining = bingoTimes.filter(t=>!bingoCalled.find(c=>c.h===t.h&&c.m===t.m));
+  if(!remaining.length) {
+    document.getElementById('bingo-called').innerHTML=`<span style="font-size:36px">🎉</span><span class="called-time-text">All done!</span><span class="called-sub">Tutte le ore chiamate</span>`;
+    return;
+  }
+  const t = remaining[Math.floor(Math.random()*remaining.length)];
+  bingoCalled.push(t);
+  const text = formatTime(t.h, t.m);
+  document.getElementById('bingo-called').innerHTML=`
+    ${drawSmallClock(t.h, t.m, 64, '#FFD93D')}
+    <span class="called-time-text">${text}</span>
+    <span class="called-sub">${formatTimeShort(t.h,t.m)}</span>
+  `;
+  document.getElementById('bingo-announce').textContent='';
+  document.getElementById('bingo-chips-wrap').style.display='';
+  const chip = document.createElement('span');
+  chip.className='called-chip';
+  chip.textContent = formatTimeShort(t.h,t.m);
+  document.getElementById('bingo-chips').appendChild(chip);
+}
+
+function checkBingoWin() {
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for(const line of lines) {
+    if(line.every(i=>bingoGridState[i].el.dataset.marked==='1')) {
+      line.forEach(i=>bingoGridState[i].el.classList.add('win'));
+      document.getElementById('bingo-announce').textContent="🎉 BINGO! It's all good! ⏰";
+      return;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+buildStudyPage();
+initBingo();
+</script>
+</body>
+</html>
